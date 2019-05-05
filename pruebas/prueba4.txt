@@ -1,0 +1,26 @@
+main()
+{
+  do
+  {
+
+    scanf("%d %d",edad, mg);    
+
+  }while((w <= 122.0) || !(p)){
+  // Tiene errores en doble ))
+
+  if (!no)
+  {
+     i===i+2
+	 // tiene errores en triple ===
+     print("Todo bien");
+  }
+  else
+  {
+     mg = 2*3--5;
+	 //errores en doble --
+  }
+
+  }
+
+}
+

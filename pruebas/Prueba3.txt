@@ -1,0 +1,29 @@
+$dff
+main()
+{
+while (a != b) && (c <= d)
+{
+
+ scanf("%f",fd);
+}
+printf("HOLA"%);
+ 
+do
+{
+ i = i + 1.7e4;
+}while (i<=10)
+
+for (sd=0;sd<=10;sd++)
+{
+  printf("HOLA!");
+}
+
+if !(no@)
+{
+  cad = 23e12
+}
+
+
+mg = 2*4/23-34+sd;
+
+}

@@ -1,0 +1,6 @@
+#include <algo.h>
+
+void name(){
+int a = b;
+b= 4;
+} 
