@@ -20,29 +20,29 @@
 
 %%
 
-init 
-    : INCLUDE LIBRERIA init
+init: 
+    INCLUDE LIBRERIA init
     | init func_dcl 
     | func_dcl
     ;
 
-func_dcl
-    : specific_type key_word parameters block 
+func_dcl: 
+    specific_type key_word parameters block 
     ;
 
-block
-    : '{' '}'
+block: 
+    '{' '}'
     | '{' list '}'
     | '{' list RETURN '}'
     ;
 
-list
-    : statementb_list
+list: 
+    statementb_list
     | list statementb_list
     ;
 
-statementb_list
-    : expression_st
+statementb_list: 
+    expression_st
     | conditional_st
     | loop_st
     | s_st
@@ -51,44 +51,44 @@ statementb_list
     ;
 
 
-expression_st
-    : assg_st ';'   
+expression_st: 
+    assg_st ';'   
     | assig_st ';'
     | assg_sst ';' 
     | incdec_exp ';'
     ;
 
-conditional_st
-    : IF '(' expression ')' block
+conditional_st: 
+    IF '(' expression ')' block
     | IF '(' expression ')' block ELSE block
     | SWITCH  expression  block
     ;
 
-loop_st
-    : WHILE '(' expression ')' block
+loop_st: 
+    WHILE '(' expression ')' block
     | DO block WHILE '(' expression ')' ';'
     | FOR '(' assg_st ';' compare_exp ';' incdec_exp  ')' block
     ;
 
-s_st
-    : SCANF '(' STRING var_aft ')' ';'
+s_st: 
+    SCANF '(' STRING var_aft ')' ';'
     ;
 
-p_st
-    : PRINTF '(' STRING var_aft ')' ';'
+p_st: 
+    PRINTF '(' STRING var_aft ')' ';'
     ;
 
 
 
 //------------------------------------------------------------------------------------------------
 
-expression
-    : conditional_expr
+expression: 
+    conditional_expr
     | compare_exp
     ;
 
-compare_exp
-    : '(' compare_exp ')'
+compare_exp: 
+    '(' compare_exp ')'
     | expression_simple LESSEQ_OP expression_simple
     | expression_simple GRETAEQ_OP expression_simple
     | expression_simple DIF_OP expression_simple
@@ -99,41 +99,41 @@ compare_exp
     | conditional_expr
     ;
 
-conditional_expr
-    : or_expr
+conditional_expr: 
+    or_expr
     | and_expr
     | no_exp
     ;
 
-no_exp
-    : '!' compare_exp
+no_exp: 
+    '!' compare_exp
     ;
 
-or_expr
-    : compare_exp OR_OP compare_exp
+or_expr: 
+compare_exp OR_OP compare_exp
     | OR_OP conditional_expr
     ;
 
-and_expr
-    : compare_exp AND_OP compare_exp
+and_expr: 
+    compare_exp AND_OP compare_exp
     | AND_OP conditional_expr
     ;
 
-incdec_exp
-    : IDENTIFICADOR MINUST_OP 
+incdec_exp: 
+    IDENTIFICADOR MINUST_OP 
     | IDENTIFICADOR INC_OP
     | MINUST_OP IDENTIFICADOR
     | IDENTIFICADOR INC_OP
     | IDENTIFICADOR '=' incdec_exp
     ;
 
-sw_st
-    : CASE expression_simple ':' statementb_list BREAK_ST ';' sw_st
+sw_st: 
+    CASE expression_simple ':' statementb_list BREAK_ST ';' sw_st
     | dftl
     ;
 
-dftl   
-    : DEFAULT ':' statementb_list BREAK_ST ';'
+dftl: 
+    DEFAULT ':' statementb_list BREAK_ST ';'
     | DEFAULT ':' BREAK_ST ';'
     |
     ;
@@ -145,45 +145,53 @@ var_aft
     ;
 
 
-assg_st
-    : specific_type IDENTIFICADOR
+assg_st: 
+    specific_type IDENTIFICADOR
     | assg_st '=' expression_simple 
     | assg_st '=' assig_st
+    | assg_st '=' anidar
     | assg_st ',' assg_st
     ;
 
-assg_sst
-    : IDENTIFICADOR '=' assig_st
+assg_sst: 
+    IDENTIFICADOR '=' assig_st
+    | IDENTIFICADOR '=' anidar
     ;
 
-assig_st
-    : expression_simple
+assig_st: 
+    expression_simple
     | assig_st operator complex_assg
     ;
 
-complex_assg
-    : expression_simple
-    | complex_assg operator complex_assg
-    | complex_assg error complex_assg
+anidar:
+    '(' complex_assg ')'
+    | anidar operator anidar
     ;
 
-operator
-    : '*'
+complex_assg: 
+    expression_simple
+    | complex_assg operator complex_assg
+    | anidar operator complex_assg
+    | complex_assg operator anidar
+    ;
+
+operator: 
+    '*'
     | '+'
     | '-'
     | '/'
     | '^'
     ;
 
-expression_simple
-    : STRING
+expression_simple: 
+    STRING
     | ENTERO
     | REAL
     | IDENTIFICADOR 
     ;
 
-specific_type
-    : VOID
+specific_type:
+    VOID
     | INT
     | FLOAT
     | CHAR
@@ -191,18 +199,18 @@ specific_type
     |
     ;
 
-key_word
-    : IDENTIFICADOR
+key_word:
+    IDENTIFICADOR
     | MAIN
     ;
 
-parameters
-    : '(' statementp_list ')'
+parameters:
+    '(' statementp_list ')'
     | '(' ')'
     ;
 
-statementp_list
-    : specific_type IDENTIFICADOR
+statementp_list:
+    specific_type IDENTIFICADOR
     | statementp_list ',' statementp_list
     | ',' error
     ;
