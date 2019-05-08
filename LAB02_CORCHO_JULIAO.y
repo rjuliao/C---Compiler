@@ -14,6 +14,7 @@
 %token IF ELSE FOR WHILE DO SWITCH CASE BREAK_ST DEFAULT
 %token TRUE FALSE
 %token LESSEQ_OP GRETAEQ_OP EQUAL DIF_OP AND_OP OR_OP MINUST_OP INC_OP
+%token ADD_ASSIG LESS_ASSIG MUL_ASSIG DIV_ASSIG MOD_ASSIG SUB_ASSIG AND_ASSIG OR_ASSIG LEFT_ASSIG RIGTH_ASSIG
 %token IDENTIFICADOR ENTERO REAL STRING
 
 %start init
@@ -56,6 +57,7 @@ expression_st:
     | assig_st ';'
     | assg_sst ';' 
     | incdec_exp ';'
+    | inc_ope ';'
     ;
 
 conditional_st: 
@@ -75,7 +77,7 @@ s_st:
     ;
 
 p_st: 
-    PRINTF '(' STRING var_aft ')' ';'
+    PRINTF '(' var_bf STRING var_aft ')' ';'
     ;
 
 
@@ -125,6 +127,11 @@ incdec_exp:
     | MINUST_OP IDENTIFICADOR
     | IDENTIFICADOR INC_OP
     | IDENTIFICADOR '=' incdec_exp
+    | inc_ope
+    ;
+
+inc_ope:
+    IDENTIFICADOR INC_OPERATOR expression_simple
     ;
 
 sw_st: 
@@ -138,12 +145,16 @@ dftl:
     |
     ;
 
-var_aft
-    : ',' IDENTIFICADOR
+var_aft: 
+    ',' IDENTIFICADOR
     | var_aft ',' IDENTIFICADOR
     |
     ;
 
+var_bf:
+    IDENTIFICADOR ','
+    |
+    ;
 
 assg_st: 
     specific_type IDENTIFICADOR
@@ -213,6 +224,19 @@ statementp_list:
     specific_type IDENTIFICADOR
     | statementp_list ',' statementp_list
     | ',' error
+    ;
+
+INC_OPERATOR:
+    ADD_ASSIG
+    | MUL_ASSIG
+    | DIV_ASSIG
+    | LESS_ASSIG
+    | MOD_ASSIG
+    | SUB_ASSIG
+    | AND_ASSIG
+    | OR_ASSIG
+    | LEFT_ASSIG
+    | RIGTH_ASSIG
     ;
 
 %%

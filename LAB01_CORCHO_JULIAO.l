@@ -48,6 +48,16 @@ break				{fprintf(yyout, "BREAK "); return(BREAK_ST);}
 "#"include			{fprintf(yyout, "#INCLUDE "); return(INCLUDE);}		
 
 "="					{fprintf(yyout," Op-asig= %s ", yytext);return('=');}
+"*="				{fprintf(yyout," Op-Mult_igual= %s ", yytext);return(MUL_ASSIG);}
+"+="				{fprintf(yyout," Op-Mas_igual= %s ", yytext);return(ADD_ASSIG);}
+"-="				{fprintf(yyout," Op-Menos_igual= %s ", yytext);return(LESS_ASSIG);}
+"/="				{fprintf(yyout," Op-Div_igual= %s ", yytext);return(DIV_ASSIG);}
+"^="				{fprintf(yyout," Op-Sub_igual= %s ", yytext);return(SUB_ASSIG);}
+"%="				{fprintf(yyout," Op-Mod_igual= %s ", yytext);return(MOD_ASSIG);}
+"&="				{fprintf(yyout," Op-Y_igual= %s ", yytext);return(AND_ASSIG);}
+"|="				{fprintf(yyout," Op-O_igual= %s ", yytext);return(OR_ASSIG);}
+"<<="				{fprintf(yyout," Op-Izq_igual= %s ", yytext);return(LEFT_ASSIG);}
+">>="				{fprintf(yyout," Op-Der_igual= %s ", yytext);return(RIGTH_ASSIG);}
 "/"					{fprintf(yyout," Op-div= %s ", yytext);return('/');}
 ":"					{fprintf(yyout," Op-dospuntos= %s ", yytext);return(':');}
 "*"					{fprintf(yyout," Op-mult= %s ", yytext);return('*');}
