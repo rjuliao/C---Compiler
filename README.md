@@ -14,6 +14,6 @@ El ejecutable de analizador es:<br>
 
 Eso genera un archivo ```Salida.txt``` donde se encuentra el resultado del analizador.
 
-##OJO :eyes:
+## OJO :eyes:
 **El analizador se detendrá en el primer error que encuentre**
 
