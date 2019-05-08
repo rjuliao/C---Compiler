@@ -3,6 +3,7 @@
     extern FILE *yyin, *yyout;
     extern int lc;
     extern char *yytext;
+    extern int yyparse();
 %}
 
 %token INT FLOAT CHAR DOUBLE
@@ -10,11 +11,10 @@
 %token RETURN
 %token LIBRERIA INCLUDE
 %token PRINTF SCANF
-%token IF ELSE FOR WHILE DO SWITCH CASE BREAK_ST
+%token IF ELSE FOR WHILE DO SWITCH CASE BREAK_ST DEFAULT
 %token TRUE FALSE
 %token LESSEQ_OP GRETAEQ_OP EQUAL DIF_OP AND_OP OR_OP MINUST_OP INC_OP
 %token IDENTIFICADOR ENTERO REAL STRING
-%token COMENTARIO1 COMENTARIO2 COMENTARIO3 COMENTARIO4
 
 %start init
 
@@ -27,33 +27,41 @@ init
     ;
 
 func_dcl
-    : specific_type key_word parameters block
+    : specific_type key_word parameters block 
     ;
 
 block
     : '{' '}'
-    | '{' statementb_list '}'
-    | '{' statementb_list RETURN '}'
+    | '{' list '}'
+    | '{' list RETURN '}'
+    ;
+
+list
+    : statementb_list
+    | list statementb_list
     ;
 
 statementb_list
     : expression_st
     | conditional_st
     | loop_st
-    | ps_st
+    | s_st
+    | p_st
+    | sw_st
     ;
 
+
 expression_st
-    : ';'
-    | assg_st ';'
+    : assg_st ';'   
     | assig_st ';'
-    | assg_sst ';'
+    | assg_sst ';' 
+    | incdec_exp ';'
     ;
 
 conditional_st
     : IF '(' expression ')' block
     | IF '(' expression ')' block ELSE block
-    | SWITCH '(' expression ')' sw_st
+    | SWITCH  expression  block
     ;
 
 loop_st
@@ -62,10 +70,15 @@ loop_st
     | FOR '(' assg_st ';' compare_exp ';' incdec_exp  ')' block
     ;
 
-ps_st
-    : PRINTF '(' var_bf STRING var_aft ')' ';'
-    | SCANF '(' STRING var_aft ')' ';'
+s_st
+    : SCANF '(' STRING var_aft ')' ';'
     ;
+
+p_st
+    : PRINTF '(' STRING var_aft ')' ';'
+    ;
+
+
 
 //------------------------------------------------------------------------------------------------
 
@@ -107,13 +120,22 @@ and_expr
     ;
 
 incdec_exp
-    : MINUST_OP IDENTIFICADOR
-    | INC_OP IDENTIFICADOR
+    : IDENTIFICADOR MINUST_OP 
+    | IDENTIFICADOR INC_OP
+    | MINUST_OP IDENTIFICADOR
+    | IDENTIFICADOR INC_OP
+    | IDENTIFICADOR '=' incdec_exp
     ;
 
 sw_st
-    : sw_st CASE expression_simple ':' statementb_list BREAK_ST
-    | CASE expression_simple ':' statementb_list BREAK_ST
+    : CASE expression_simple ':' statementb_list BREAK_ST ';' sw_st
+    | dftl
+    ;
+
+dftl   
+    : DEFAULT ':' statementb_list BREAK_ST ';'
+    | DEFAULT ':' BREAK_ST ';'
+    |
     ;
 
 var_aft
@@ -122,14 +144,10 @@ var_aft
     |
     ;
 
-var_bf 
-    : IDENTIFICADOR ','
-    |
-    ;
 
 assg_st
     : specific_type IDENTIFICADOR
-    | assg_st '=' expression_simple
+    | assg_st '=' expression_simple 
     | assg_st '=' assig_st
     | assg_st ',' assg_st
     ;
@@ -161,7 +179,7 @@ expression_simple
     : STRING
     | ENTERO
     | REAL
-    | IDENTIFICADOR
+    | IDENTIFICADOR 
     ;
 
 specific_type
@@ -209,10 +227,11 @@ main(int argc, char** argv){
 
 yyerror(char *s)
 {
-    fprintf(yyout,"Error en línea  %d, caracter: '%s' \n",lc, yytext);
+    fprintf(yyout,"Error Sintactico en línea  %d, caracter: '%s'.", lc, yytext);
     
 }
 
 yywrap(){
     return(1);
 }
+

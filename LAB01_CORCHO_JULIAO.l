@@ -40,6 +40,7 @@ while				{fprintf(yyout, "WHILE "); return(WHILE);}
 do					{fprintf(yyout, "DO "); return(DO);}
 switch				{fprintf(yyout, "SWITCH"); return(SWITCH);}
 case				{fprintf(yyout, "CASE"); return(CASE);}
+default				{fprintf(yyout, "DEFAULT"); return(DEFAULT);}
 return				{fprintf(yyout, "RETURN "); return(RETURN);}
 true				{fprintf(yyout, "TRUE "); return(TRUE);}
 false				{fprintf(yyout, "FALSE "); return(FALSE);}
@@ -78,11 +79,11 @@ break				{fprintf(yyout, "BREAK "); return(BREAK_ST);}
 {dig}+							{fprintf(yyout,"Cte entera= %s ", yytext);return(ENTERO);}
 {dig}+("."{dig}*)?({exp})?		{fprintf(yyout,"Cte real= %s ", yytext);return(REAL);}
 {opcl}.*{opcl} 					{fprintf(yyout,"Cte cadena= %s ",yytext);return(STRING);}
-"//".*     						{fprintf(yyout,"COMENTARIO DE LÍNEA INDEPENDIENTE");return(COMENTARIO1);}
-"/*".*"*/"     					{fprintf(yyout,"COMENTARIO DE  LÍNEA");return(COMENTARIO2);}
+"//".*     						{fprintf(yyout,"COMENTARIO DE LÍNEA INDEPENDIENTE");}
+"/*".*"*/"     					{fprintf(yyout,"COMENTARIO DE  LÍNEA");}
 [/][*][^*]*[*]+([^*/][^*]*[*]+)*[/] 	{
-								fprintf(yyout,"COMENTARIO DE BLOQUE");return(COMENTARIO3);}
-[/][*]							{fprintf(yyout,"COMENTARIO NO TERMINADO");return(COMENTARIO4);}
+								fprintf(yyout,"COMENTARIO DE BLOQUE");}
+[/][*]							{fprintf(yyout,"COMENTARIO NO TERMINADO");}
 ({abc}*)?({dig}*)?[$%&\@?¡¿#]({abc}*)?({dig}*)? 		{
 								counter(yytext);fprintf(yyout,"error");}
 "<"{abc}+"."{abc}+">"			{fprintf(yyout,"Librería = %s ", yytext);return(LIBRERIA);}
